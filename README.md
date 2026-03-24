@@ -1,4 +1,4 @@
-# bridged
+# bridgerton
 
 CLI for [Bridge.xyz](https://www.bridge.xyz) stablecoin infrastructure.
 
@@ -6,25 +6,25 @@ CLI for [Bridge.xyz](https://www.bridge.xyz) stablecoin infrastructure.
 
 ```bash
 # check exchange rates
-bridged rates --from usd --to eur
+bridgerton rates --from usd --to eur
 
 # list customers
-bridged customers list
+bridgerton customers list
 
 # create a liquidation address
-bridged liquidation create <customer-id> \
+bridgerton liquidation create <customer-id> \
   --chain tempo --currency usdc \
   --destination-address 0x... \
   --dest-rail tempo --dest-currency usdc
 
 # list liquidation addresses
-bridged liquidation list <customer-id>
+bridgerton liquidation list <customer-id>
 
 # create a wallet on tempo
-bridged wallets create <customer-id> --chain tempo
+bridgerton wallets create <customer-id> --chain tempo
 
 # create a transfer
-bridged transfers create \
+bridgerton transfers create \
   --on-behalf-of <customer-id> \
   --source-rail bridge_wallet \
   --source-currency usdc \
@@ -33,13 +33,13 @@ bridged transfers create \
   --dest-address 0x...
 
 # run as MCP server
-bridged --mcp
+bridgerton --mcp
 ```
 
 ### Example: listing liquidation addresses
 
 ```
-$ bridged liquidation list 357ca32a-9cb1-4463-8a93-b3564351397e
+$ bridgerton liquidation list 357ca32a-9cb1-4463-8a93-b3564351397e
 
 count: 2
 data[2]:

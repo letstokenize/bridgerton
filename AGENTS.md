@@ -1,4 +1,4 @@
-# bridged
+# bridgerton
 
 Bridge.xyz stablecoin infrastructure CLI. Built with incur.
 
@@ -24,9 +24,9 @@ src/
 ## Key Design Decisions
 
 - **incur subcommand groups**: `customers`, `wallets`, `transfers`, `liquidation`, `virtual-accounts` as sub-CLIs
-- **core/client.ts**: thin fetch wrapper, reads `BRIDGE_API_KEY` and `BRIDGE_SANDBOX` from env
-- **Production**: `https://api.bridge.xyz/v0`, **Sandbox**: `https://api.sandbox.bridge.xyz/v0`
-- **Bun + local incur**: `"incur": "file:../incur"`
+- **core/client.ts**: thin fetch wrapper, reads `BRIDGE_API_KEY` from env
+- **Auto-detect**: `sk-test-*` → sandbox (`https://api.sandbox.bridge.xyz/v0`), `sk-live-*` → production (`https://api.bridge.xyz/v0`)
+- **npm package**: published as `bridgerton`
 
 ## Development
 
@@ -38,8 +38,7 @@ bun run typecheck    # tsc --noEmit
 
 ## Environment
 
-- `BRIDGE_API_KEY` — Bridge API key (required)
-- `BRIDGE_SANDBOX` — set to `true` to use sandbox API (optional)
+- `BRIDGE_API_KEY` — Bridge API key (required, auto-detects sandbox vs production from key prefix)
 
 ## Commit Rules
 

@@ -6,7 +6,7 @@ import { createLiquidation, getLiquidation, listLiquidations } from './core/liqu
 import { createVirtualAccount, getVirtualAccount, listVirtualAccounts } from './core/virtual-accounts.js'
 import { getExchangeRates } from './core/exchange-rates.js'
 
-const cli = Cli.create('bridged', {
+const cli = Cli.create('bridgerton', {
   version: '0.1.0',
   description: 'Bridge.xyz stablecoin infrastructure CLI.',
   sync: {
