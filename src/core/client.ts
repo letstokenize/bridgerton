@@ -1,6 +1,6 @@
-/** Base URL for the Bridge API, toggled by `BRIDGE_SANDBOX` env var. */
+/** Base URL for the Bridge API, auto-detected from API key prefix. */
 const base = () =>
-  process.env.BRIDGE_SANDBOX === 'true'
+  (process.env.BRIDGE_API_KEY ?? '').startsWith('sk-test')
     ? 'https://api.sandbox.bridge.xyz/v0'
     : 'https://api.bridge.xyz/v0'
 
