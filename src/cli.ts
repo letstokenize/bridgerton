@@ -2,7 +2,7 @@ import { Cli, z } from 'incur'
 import { createCustomer, getCustomer, listCustomers } from './core/customers.js'
 import { createWallet, getWallet, listWallets } from './core/wallets.js'
 import { createTransfer, getTransfer, listTransfers } from './core/transfers.js'
-import { createLiquidation, getLiquidation, listLiquidations } from './core/liquidation.js'
+import { createLiquidation, getLiquidation, listLiquidations, listDrains } from './core/liquidation.js'
 import { createVirtualAccount, getVirtualAccount, listVirtualAccounts } from './core/virtual-accounts.js'
 import { getExchangeRates } from './core/exchange-rates.js'
 
@@ -165,6 +165,15 @@ liquidation.command('list', {
   description: 'List liquidation addresses for a customer',
   args: z.object({ customerId: z.string().describe('Customer ID') }),
   async run(c) { return listLiquidations(c.args.customerId) },
+})
+
+liquidation.command('drains', {
+  description: 'List drain history for a liquidation address',
+  args: z.object({
+    customerId: z.string().describe('Customer ID'),
+    liquidationAddressId: z.string().describe('Liquidation address ID'),
+  }),
+  async run(c) { return listDrains(c.args.customerId, c.args.liquidationAddressId) },
 })
 
 cli.command(liquidation)
