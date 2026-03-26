@@ -9,7 +9,7 @@ import { getExchangeRates } from './core/exchange-rates.js'
 import { listPrefundedAccounts, getPrefundedAccount, getPrefundedAccountHistory } from './core/prefunded-accounts.js'
 
 const cli = Cli.create('bridgerton', {
-  version: '0.1.0',
+  version: '0.2.0',
   description: 'Bridge.xyz stablecoin infrastructure CLI.',
   sync: {
     suggestions: [
