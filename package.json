@@ -14,11 +14,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc && chmod +x dist/bin.js && bun link",
+    "build": "tsc && chmod +x dist/bin.js",
     "typecheck": "tsc --noEmit",
     "changeset:version": "changeset version",
-    "changeset:publish": "bun run build && changeset publish",
-    "release": "changeset version && bun run build && changeset publish && git add package.json CHANGELOG.md .changeset && git commit -m 'chore: release' && git push"
+    "changeset:publish": "bun run build && changeset publish"
   },
   "dependencies": {
     "incur": "^0.3.13"
