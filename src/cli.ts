@@ -13,7 +13,7 @@ import pkg from '../package.json' with { type: 'json' }
 const cli = Cli.create('bridgerton', {
   version: pkg.version,
   description: 'Bridge.xyz stablecoin infrastructure CLI.',
-  format: (getDefaultFormat() as any) ?? undefined,
+  format: getDefaultFormat() as 'toon' | 'json' | 'yaml' | 'md' | 'jsonl' | undefined,
   sync: {
     suggestions: [
       'create a wallet on tempo for a customer',

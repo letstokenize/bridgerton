@@ -1,7 +1,6 @@
 import { readFileSync, mkdirSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { homedir } from 'node:os'
-import { createInterface } from 'node:readline/promises'
 
 const CONFIG_DIR = join(homedir(), '.config', 'bridgerton')
 const CONFIG_FILE = join(CONFIG_DIR, 'config.json')
@@ -35,33 +34,9 @@ const base = () =>
 /** Returns the full URL for a Bridge API path. */
 export const url = (path: string) => `${base()}${path}`
 
-async function promptForKey(): Promise<string> {
-  const rl = createInterface({ input: process.stdin, output: process.stderr })
-  console.error('\n  No Bridge API key found.\n')
-  console.error('  Get one at https://dashboard.bridge.xyz/app/keys\n')
-  const key = await rl.question('  Enter your API key: ')
-  rl.close()
-  const trimmed = key.trim()
-  if (!trimmed) {
-    console.error('\n  No key provided.')
-    process.exit(1)
-  }
-  writeConfig({ api_key: trimmed })
-  const env = trimmed.startsWith('sk-test') ? 'sandbox' : 'production'
-  console.error(`\n  ✓ Saved to ~/.config/bridgerton/config.json (${env})\n`)
-  return trimmed
-}
-
-async function ensureApiKey(): Promise<string> {
-  const key = getApiKey()
-  if (key) return key
-  if (process.stdin.isTTY) return promptForKey()
-  console.error('Error: No Bridge API key found.\n\n  Run:  bridgerton configure api-key <your-api-key>\n  Or:   export BRIDGE_API_KEY=sk-live-...\n')
-  process.exit(1)
-}
-
-async function request(method: string, path: string, body?: Record<string, unknown>) {
-  const apiKey = await ensureApiKey()
+function request(method: string, path: string, body?: Record<string, unknown>) {
+  const apiKey = getApiKey()
+  if (!apiKey) throw new Error('No Bridge API key configured. Run: bridgerton configure api-key <key>')
   const h: Record<string, string> = {
     'Api-Key': apiKey,
     'Content-Type': 'application/json',
@@ -69,12 +44,11 @@ async function request(method: string, path: string, body?: Record<string, unkno
   if (method === 'POST' || method === 'PUT')
     h['Idempotency-Key'] = crypto.randomUUID()
 
-  const res = await fetch(url(path), {
+  return fetch(url(path), {
     method,
     headers: h,
     ...(body ? { body: JSON.stringify(body) } : {}),
-  })
-  return res.json()
+  }).then(res => res.json())
 }
 
 /** Thin fetch wrapper for the Bridge.xyz API. */
