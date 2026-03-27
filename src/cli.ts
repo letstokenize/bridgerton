@@ -7,6 +7,7 @@ import { createExternalAccount, getExternalAccount, listExternalAccounts, delete
 import { createVirtualAccount, getVirtualAccount, listVirtualAccounts, listAllVirtualAccounts, updateVirtualAccount, deactivateVirtualAccount, reactivateVirtualAccount, getVirtualAccountActivity, getAllVirtualAccountActivity } from './core/virtual-accounts.js'
 import { getExchangeRates } from './core/exchange-rates.js'
 import { listPrefundedAccounts, getPrefundedAccount, getPrefundedAccountHistory } from './core/prefunded-accounts.js'
+import { writeConfig, getApiKey } from './core/client.js'
 import pkg from '../package.json' with { type: 'json' }
 
 const cli = Cli.create('bridgerton', {
@@ -476,6 +477,28 @@ prefundedAccounts.command('history', {
 })
 
 cli.command(prefundedAccounts)
+
+// --- configure ---
+cli.command('configure', {
+  description: 'Save your Bridge API key to ~/.config/bridgerton/config.json',
+  args: z.object({ apiKey: z.string().describe('Bridge API key (sk-live-... or sk-test-...)') }),
+  async run(c) {
+    writeConfig({ api_key: c.args.apiKey })
+    const env = c.args.apiKey.startsWith('sk-test') ? 'sandbox' : 'production'
+    return { saved: true, environment: env, config: '~/.config/bridgerton/config.json' }
+  },
+})
+
+cli.command('whoami', {
+  description: 'Show which API key and environment are active',
+  async run() {
+    const key = getApiKey()
+    if (!key) return { error: 'No API key configured. Run: bridgerton configure <api-key>' }
+    const source = process.env.BRIDGE_API_KEY ? 'BRIDGE_API_KEY env var' : '~/.config/bridgerton/config.json'
+    const env = key.startsWith('sk-test') ? 'sandbox' : 'production'
+    return { key: key.slice(0, 12) + '...' + key.slice(-4), environment: env, source }
+  },
+})
 
 // --- exchange rates ---
 cli.command('rates', {

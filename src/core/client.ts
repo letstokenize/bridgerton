@@ -1,6 +1,28 @@
+import { readFileSync, mkdirSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { homedir } from 'node:os'
+
+const CONFIG_DIR = join(homedir(), '.config', 'bridgerton')
+const CONFIG_FILE = join(CONFIG_DIR, 'config.json')
+
+function readConfig(): Record<string, string> {
+  try { return JSON.parse(readFileSync(CONFIG_FILE, 'utf8')) } catch { return {} }
+}
+
+/** Write a key-value pair to the config file. */
+export function writeConfig(data: Record<string, string>) {
+  mkdirSync(CONFIG_DIR, { recursive: true })
+  writeFileSync(CONFIG_FILE, JSON.stringify({ ...readConfig(), ...data }, null, 2) + '\n')
+}
+
+/** Resolve the API key: env var takes precedence, then config file. */
+export function getApiKey(): string {
+  return process.env.BRIDGE_API_KEY ?? readConfig().api_key ?? ''
+}
+
 /** Base URL for the Bridge API, auto-detected from API key prefix. */
 const base = () =>
-  (process.env.BRIDGE_API_KEY ?? '').startsWith('sk-test')
+  getApiKey().startsWith('sk-test')
     ? 'https://api.sandbox.bridge.xyz/v0'
     : 'https://api.bridge.xyz/v0'
 
@@ -8,7 +30,7 @@ const base = () =>
 export const url = (path: string) => `${base()}${path}`
 
 const headers = () => ({
-  'Api-Key': process.env.BRIDGE_API_KEY ?? '',
+  'Api-Key': getApiKey(),
   'Content-Type': 'application/json',
 })
 
