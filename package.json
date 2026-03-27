@@ -1,6 +1,6 @@
 {
   "name": "bridgerton",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "description": "Bridge.xyz stablecoin infrastructure CLI.",
   "license": "MIT",
@@ -17,7 +17,8 @@
     "build": "tsc && chmod +x dist/bin.js && bun link",
     "typecheck": "tsc --noEmit",
     "changeset:version": "changeset version",
-    "changeset:publish": "bun run build && changeset publish"
+    "changeset:publish": "bun run build && changeset publish",
+    "release": "changeset version && bun run build && changeset publish && git add -A && git commit -m 'chore: release' && git push"
   },
   "dependencies": {
     "incur": "^0.3.13"

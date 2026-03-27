@@ -11,3 +11,15 @@ export const getWallet = (customerId: string, walletId: string) =>
 /** List wallets for a customer. */
 export const listWallets = (customerId: string) =>
   bridge.get(`/customers/${customerId}/wallets`)
+
+/** List all wallets across all customers. */
+export const listAllWallets = () =>
+  bridge.get('/wallets')
+
+/** Get total balances across all wallets. */
+export const getWalletTotalBalances = () =>
+  bridge.get('/wallets/total_balances')
+
+/** Get history for a wallet. */
+export const getWalletHistory = (walletId: string) =>
+  bridge.get(`/wallets/${walletId}/history`)

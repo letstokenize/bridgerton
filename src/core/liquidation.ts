@@ -15,3 +15,11 @@ export const listLiquidations = (customerId: string) =>
 /** List drain history for a liquidation address. */
 export const listDrains = (customerId: string, liquidationAddressId: string) =>
   bridge.get(`/customers/${customerId}/liquidation_addresses/${liquidationAddressId}/drains`)
+
+/** Update a liquidation address. */
+export const updateLiquidation = (customerId: string, liquidationAddressId: string, data: Record<string, unknown>) =>
+  bridge.put(`/customers/${customerId}/liquidation_addresses/${liquidationAddressId}`, data)
+
+/** List drain activity across all customers. */
+export const listAllDrains = () =>
+  bridge.get('/liquidation_addresses/drains')
