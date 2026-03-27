@@ -508,7 +508,8 @@ configure.command('show', {
     if (!key) return { error: 'No API key configured. Run: bridgerton configure api-key <key>' }
     const source = process.env.BRIDGE_API_KEY ? 'BRIDGE_API_KEY env var' : '~/.config/bridgerton/config.json'
     const env = key.startsWith('sk-test') ? 'sandbox' : 'production'
-    return { api_key: key.slice(0, 12) + '...' + key.slice(-4), environment: env, source, format: getDefaultFormat() ?? 'toon' }
+    console.error(`  source: ${source}\n`)
+    return { api_key: key.slice(0, 12) + '...' + key.slice(-4), environment: env, format: getDefaultFormat() ?? 'toon' }
   },
 })
 
