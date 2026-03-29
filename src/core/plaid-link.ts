@@ -17,16 +17,16 @@ function buildHtml(linkToken: string, port: number): string {
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 </head>
 <body>
-<p id="s">Opening Plaid Link…</p>
+<p id="s">Opening Plaid Link...</p>
 <script>
 var s=document.getElementById('s');
 var h=Plaid.create({
   token:${JSON.stringify(linkToken)},
   onSuccess:function(pt){
-    s.textContent='Linking account…';
+    s.textContent='Linking account...';
     fetch('http://localhost:${port}/exchange',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({public_token:pt})})
       .then(function(r){return r.json()})
-      .then(function(){s.textContent='Done — you can close this tab.'})
+      .then(function(){s.textContent='Done - you can close this tab.'})
       .catch(function(){s.textContent='Exchange failed. Check terminal.'});
   },
   onExit:function(e){
