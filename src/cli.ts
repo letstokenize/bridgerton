@@ -6,6 +6,7 @@ import { createLiquidation, getLiquidation, listLiquidations, listDrains, update
 import { createExternalAccount, getExternalAccount, listExternalAccounts, deleteExternalAccount } from './core/external-accounts.js'
 import { createVirtualAccount, getVirtualAccount, listVirtualAccounts, listAllVirtualAccounts, updateVirtualAccount, deactivateVirtualAccount, reactivateVirtualAccount, getVirtualAccountActivity, getAllVirtualAccountActivity } from './core/virtual-accounts.js'
 import { getExchangeRates } from './core/exchange-rates.js'
+import { runPlaidLinkFlow } from './core/plaid-link.js'
 import { listPrefundedAccounts, getPrefundedAccount, getPrefundedAccountHistory } from './core/prefunded-accounts.js'
 import { writeConfig, getApiKey, getDefaultFormat } from './core/client.js'
 import pkg from '../package.json' with { type: 'json' }
@@ -354,6 +355,13 @@ externalAccounts.command('delete', {
 })
 
 cli.command(externalAccounts)
+
+// --- plaid-link command ---
+cli.command('plaid-link', {
+  description: 'Link a bank account via Plaid Link (opens browser). Adds an external account without passing raw bank details.',
+  args: z.object({ customerId: z.string().describe('Customer ID') }),
+  async run(c) { return runPlaidLinkFlow(c.args.customerId) },
+})
 
 // --- virtual-accounts subcommand group ---
 const virtualAccounts = Cli.create('virtual-accounts', { description: 'Manage virtual accounts (fiat deposit addresses).' })
