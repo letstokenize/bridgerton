@@ -12,7 +12,7 @@ src/
 ├── bin.ts              # Entry point — cli.serve()
 ├── index.ts            # Library exports
 └── core/
-    ├── client.ts       # Bridge API fetch wrapper (auth, base URL, skipIdempotency)
+    ├── client.ts       # Bridge API fetch wrapper (auth, base URL)
     ├── customers.ts    # Customers API
     ├── wallets.ts      # Wallets API
     ├── transfers.ts    # Transfers API
@@ -27,7 +27,7 @@ src/
 ## Key Design Decisions
 
 - **incur subcommand groups**: `customers`, `wallets`, `transfers`, `liquidation`, `external-accounts`, `virtual-accounts`, `prefunded-accounts`, `configure` as sub-CLIs
-- **core/client.ts**: thin fetch wrapper, reads API key from `~/.config/bridgerton/config.json` or `BRIDGE_API_KEY` env var. Supports `{ skipIdempotency: true }` for endpoints that reject `Idempotency-Key`
+- **core/client.ts**: thin fetch wrapper, reads API key from `~/.config/bridgerton/config.json` or `BRIDGE_API_KEY` env var
 - **Auto-detect**: `sk-test-*` → sandbox (`https://api.sandbox.bridge.xyz/v0`), `sk-live-*` → production (`https://api.bridge.xyz/v0`)
 - **Plaid Link**: `external-accounts create` defaults to Plaid Link (browser-based bank linking). Pass `--accountNumber`, `--routingNumber`, `--accountOwnerName` for manual creation
 - **npm package**: published as `bridgerton`
