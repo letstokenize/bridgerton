@@ -13,7 +13,7 @@ export const exchangePublicToken = (linkToken: string, publicToken: string) =>
 function buildHtml(linkToken: string, port: number): string {
   return `<!DOCTYPE html>
 <html>
-<head><title>Bridgerton — Plaid Link</title>
+<head><meta charset="utf-8"><title>Bridgerton — Plaid Link</title>
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 </head>
 <body>
